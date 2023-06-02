@@ -51,7 +51,7 @@ class AttenuationError(QError):
         :param Qubit qubit: qubit from quantum channel
         :return: either unchanged qubit or None
         '''
-        if np.random.rand() > self.attenuation and qubit is not None:
+        if np.random.default_rng().random() > self.attenuation and qubit is not None:
             # Photon was lost due to attenuation effects; collapse state and return nothing
             qubit.measure()
             qubit = None
@@ -79,7 +79,7 @@ class RandomUnitaryError(QError):
         :return: rotated qubit
         '''
         if qubit is not None:
-            x_angle, z_angle = np.random.normal(0, self.variance, 2)
+            x_angle, z_angle = np.random.default_rng().normal(0, self.variance, 2)
             gates.RX(qubit, x_angle)
             gates.RZ(qubit, z_angle)
         return qubit
@@ -103,7 +103,7 @@ class SystematicUnitaryError(QError):
         if operator is not None:
             self.operator = operator
         elif variance is not None:
-            x_angle, z_angle = np.random.normal(0, variance, 2)
+            x_angle, z_angle = np.random.default_rng().normal(0, variance, 2)
             Rx = np.cos(x_angle / 2.0) * gates._I - 1j * np.sin(x_angle / 2.0) * gates._X
             Rz = np.cos(z_angle / 2.0) * gates._I - 1j * np.sin(z_angle / 2.0) * gates._Z
             self.operator = np.dot(Rz, Rx)
