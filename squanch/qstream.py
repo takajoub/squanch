@@ -115,6 +115,7 @@ class QStream:
         dim = 2 ** system_size
         mallocced = sharedctypes.RawArray(ctypes.c_double, num_systems * dim * dim)
         array = np.frombuffer(mallocced, dtype = np.complex64).reshape((num_systems, dim, dim))
+        QStream.reformat(array)
         return array
 
     def system(self, index):

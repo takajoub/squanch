@@ -46,7 +46,7 @@ class Agent(multiprocessing.Process):
         out[self.name] = None
         out[self.name + ":progress"] = 0
         out[self.name + ":progress_max"] = qstream.state.shape[0]
-        self.qstream = QStream.from_array(qstream.state, agent = self)
+        self.qstream = QStream.from_array(qstream.state, qstream.lock, agent = self)
         self.out = out
 
         # Communication channels are dicts; keys: agent objects, values: channel objects
